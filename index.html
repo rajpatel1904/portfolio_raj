@@ -21,12 +21,17 @@
 
     <header class="header">
         <a href="#" class="logo">RP</a>
+        <div class="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
         <nav class="navbar">
-            <a href="#" style="--i:1;" class="active">Home</a>
-            <a href="#about" style="--i:2;">About</a>
-            <a href="#experience" style="--i:3;">Experience</a>
-            <a href="#projects" style="--i:4;">Projects</a>
-            <a href="#volunteer" style="--i:5;">Volunteer</a>
+            <a href="#" style="--i:1" class="active">Home</a>
+            <a href="#about" style="--i:2">About</a>
+            <a href="#experience" style="--i:3">Experience</a>
+            <a href="#projects" style="--i:4">Projects</a>
+            <a href="#volunteer" style="--i:5">Volunteer</a>
         </nav>
     </header>
 
@@ -185,6 +190,57 @@
         </div>
     </section>
 
+    <script>
+        // Get all sections that have an ID defined
+        const sections = document.querySelectorAll("section[id]");
+        const navLinks = document.querySelectorAll(".navbar a");
+        const hamburger = document.querySelector(".hamburger-menu");
+        const navbar = document.querySelector(".navbar");
+        
+        // Toggle mobile menu
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navbar.classList.toggle('active');
+        });
+
+        // Close mobile menu when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navbar.classList.remove('active');
+            });
+        });
+        
+        // Add click event listeners to navbar links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        function navHighlighter() {
+            let scrollY = window.pageYOffset;
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            sections.forEach(current => {
+                const sectionHeight = current.offsetHeight;
+                const sectionTop = current.offsetTop - 100;
+                const sectionId = current.getAttribute("id");
+                
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    document.querySelector(".navbar a[href*=" + sectionId + "]").classList.add("active");
+                }
+            });
+            
+            if (scrollY < 100) {
+                document.querySelector(".navbar a[href='#']").classList.add("active");
+            }
+        }
+
+        window.addEventListener("scroll", navHighlighter);
+        navHighlighter();
+    </script>
 </body>
 
 </html>
